@@ -1,4 +1,6 @@
 import React from 'react'
+import $ from 'jquery'
+
 function Pokemon() {
   this.name = '';
   this.sprites = {front_default:  ''};
@@ -10,6 +12,29 @@ var PokemonInfo = React.createClass({
   getInitialState: function() {
     var blankPoke = new Pokemon();
     return {pokemon: blankPoke};
+  },
+  componentWillReceiveProps: function(nextProps) {
+    console.log("receiving props")
+    this.whoIsThatPokemon(nextProps.params.facts)
+  },
+  whoIsThatPokemon: function(pokemon) {
+    $.ajax({
+      url: "http://pokeapi.co/api/v2/pokemon/" + pokemon,
+      dataType: 'json',
+      cache: true,
+      success: function(data){
+        // console.log("loaded pokemon details");
+        console.log(data);
+        this.setState({pokemon: data})
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.log("error")
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  componentDidMount: function() {
+    this.whoIsThatPokemon(this.props.params.facts)
   },
   render: function() {
     console.log(this.props.params)

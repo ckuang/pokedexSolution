@@ -1,9 +1,7 @@
 import React from 'react'
+import {Link} from 'react-router'
 
 var PokemonList = React.createClass({
-  handleClick: function(pokemon){
-      this.props.click(pokemon);
-  },
   render: function() {
     if (this.props.data.length === 0){
       return null;
@@ -13,10 +11,9 @@ var PokemonList = React.createClass({
     var pokemonNodes = this.props.data.map(function(pokemon, idx){
       return(
         <li
-          onClick={that.handleClick.bind(that, pokemon)}
           className="list-group-item"
           key={idx}>
-           {pokemon.name}
+          <Link to={"/" + pokemon.name}>{pokemon.name}</Link>
         </li>
       );
     });
